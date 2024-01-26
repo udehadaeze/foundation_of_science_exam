@@ -5,26 +5,26 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books.db'  # Database URI
 db = SQLAlchemy(app)
 
-# Book model
+# This is my Book model
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     author = db.Column(db.String(255))
     publication_year = db.Column(db.Integer)
 
-# Initialize database
+# Here i am Initializing the database
 @app.before_first_request
 def addcontext():
     with app.app_context():
         db.create_all()  # Create tables if not exist
 
-# Route for displaying book list
+# this is my Route for displaying the book list
 @app.route('/books')
 def books():
     books = Book.query.all()  # Get all books from database
     return render_template('books.html', books=books)
 
-# Route for adding a new book
+# this is my Route for adding a new book
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
     if request.method == 'POST':
